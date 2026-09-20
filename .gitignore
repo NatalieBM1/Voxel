@@ -1,0 +1,18 @@
+# Dependencias y build
+node_modules
+dist
+dist-ssr
+
+# Variables de entorno (claves): nunca subir a git
+.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Editor y sistema
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store

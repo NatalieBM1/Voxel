@@ -1,0 +1,39 @@
+body {
+  margin: 0;
+  background: white;
+  color: black;
+}
+
+.header,
+.footer {
+  padding: 16px 24px;
+}
+
+.header h1 {
+  margin: 0;
+}
+
+.main {
+  padding: 24px;
+}
+
+/* Cuadrícula de tarjetas */
+.game-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.game-card {
+  border: 1px solid #ccc;
+  padding: 12px;
+}
+
+.game-card img {
+  width: 100%;
+  display: block;
+}
+
+.error {
+  color: red;
+}
