@@ -5,7 +5,7 @@ function Footer() {
         <p className="footer-brand">
           Voxel<span className="wordmark-block" aria-hidden="true"></span>
         </p>
-        <p>Tienda de videojuegos para el taller de Scrum</p>
+        <p>Tienda Videojuegos</p>
       </div>
     </footer>
   )

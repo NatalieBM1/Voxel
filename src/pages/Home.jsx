@@ -12,14 +12,34 @@ function Home({ games, favorites, onToggleFavorite, onAddToCart }) {
   // Juegos que se muestran en la página; por ahora es la lista completa, sin transformar
   let visibleGames = games
 
-  // HU08 - Filtrar los juegos - Inserta aquí el código para mostrar solo los juegos del género seleccionado
+  // HU07 - Filtrar los juegos
+  // El selector de género ya guarda en la variable selectedGenre el género elegido
+  // (o "Todos" si no se ha elegido ninguno en particular).
+  // Aquí debes mostrar solo los juegos que coincidan con ese género.
+  // Si selectedGenre es "Todos", se deben mostrar todos los juegos sin filtrar.
+  // Pista: puedes usar el método filter() comparando el genre de cada juego.
 
-  // HU09 - Buscar - Inserta aquí el código para mostrar solo los juegos cuyo título coincide con la búsqueda
+  // HU08 - Buscar
+  // El campo de búsqueda ya guarda en la variable searchText lo que el estudiante escribe.
+  // Aquí debes mostrar solo los juegos cuyo título contenga ese texto,
+  // sin importar si está en mayúsculas o minúsculas.
+  // Pista: puedes usar el método filter() junto con toLowerCase() e includes().
 
-  // HU05 - Ordenar los juegos - Inserta aquí el código para que los juegos se reordenen según sortOption antes de mostrarlos
+  // HU04 - Ordenar los juegos
+  // El selector de arriba ya guarda en la variable sortOption la opción elegida
+  // (por ejemplo "precio-asc", "precio-desc" o "nombre-az").
+  // Aquí debes usar esa variable para reordenar la lista de juegos antes de mostrarla.
+  // Pista: puedes copiar el arreglo de juegos con [...games] y usar el método sort(),
+  // comparando el price o el title según el valor de sortOption.
 
   function handleShowMore() {
-    // HU07 - Paginación - Inserta aquí el código para mostrar los primeros 12 juegos y cargar 12 más cada vez que se presione "Ver más"
+    // HU06 - Paginación
+    // Ahora mismo se muestran todos los juegos al mismo tiempo, lo que hace la página muy larga.
+    // Aquí debes hacer que, al inicio, solo se muestren los primeros 12 juegos,
+    // y que el botón "Ver más" muestre 12 juegos adicionales cada vez que se presione,
+    // hasta llegar al final de la lista.
+    // Pista: puedes usar un estado como "visibleCount" que empiece en 12 y aumente
+    // de 12 en 12, y usar slice() para cortar el arreglo de juegos hasta ese número.
   }
 
   return (

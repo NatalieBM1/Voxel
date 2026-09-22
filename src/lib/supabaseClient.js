@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 
-// Los valores vienen del archivo .env (no se escriben en el código)
+// Los valores vienen del archivo .env 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 

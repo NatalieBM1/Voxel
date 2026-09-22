@@ -1,4 +1,4 @@
-// eslint-disable-next-line no-unused-vars -- cart se usa al resolver HU10
+// eslint-disable-next-line no-unused-vars -- cart se usa al resolver HU09
 function Cart({ cart }) {
   return (
     <div className="page">
@@ -6,9 +6,13 @@ function Cart({ cart }) {
         <h2>Carrito</h2>
       </div>
       <div className="page__content">
-        {/* HU10 - Carrito - Inserta aquí el código para mostrar los juegos agregados, agrupando los repetidos y sumando su cantidad */}
+        {/* HU09 - Carrito
+            Aquí debes mostrar cada juego que está en el carrito, junto con su cantidad
+            y su subtotal (precio multiplicado por la cantidad). */}
 
-        {/* HU10 - Carrito - Inserta aquí el código para calcular y mostrar el resumen de compra: subtotal por juego y total general */}
+        {/* HU09 - Carrito
+            Aquí debes calcular y mostrar el total general de la compra,
+            que es la suma de todos los subtotales del carrito. */}
       </div>
     </div>
   )

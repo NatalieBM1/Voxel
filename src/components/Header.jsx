@@ -1,5 +1,5 @@
 function Header() {
-  // ===== HU01 - Nombre y Logo (ejemplo ya resuelto) =====
+  // ===== Ejemplo ya resuelto: nombre y logo de la tienda =====
   return (
     <header className="header">
       <div className="header-inner">
@@ -9,7 +9,7 @@ function Header() {
       </div>
     </header>
   )
-  // ===== Fin HU01 (así debes comentar y resolver tu propia historia) =====
+  // ===== Fin del ejemplo (así debes comentar y resolver tú tus propias historias) =====
 }
 
 export default Header

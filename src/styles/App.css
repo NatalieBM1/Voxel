@@ -1,4 +1,9 @@
-/* HU04 - Diseño libre - Cada equipo puede modificar colores, tipografía, bordes y espaciados de este archivo con total libertad */
+/* HU03 - Diseño libre
+   A partir de aquí, todo el archivo es tuyo: puedes cambiar colores,
+   tipografía, bordes y espaciados como quieras.
+   Lo único que no debes borrar es la estructura de las clases .page,
+   .page__header y .page__content, porque de eso depende que las tres
+   pantallas (Inicio, Favoritos y Carrito) se vean ordenadas. */
 
 :root {
   --color-fondo: #ffffff;
@@ -48,7 +53,7 @@ p {
   padding: var(--espacio);
 }
 
-/* ---------- Marca (logo + nombre, ver HU01) ---------- */
+/* ---------- Marca (logo + nombre, ejemplo ya resuelto) ---------- */
 .wordmark {
   display: flex;
   align-items: baseline;
@@ -205,7 +210,11 @@ p {
 }
 
 .btn-add-cart {
-  /* HU02 - Botón de estilo - Inserta aquí el color, el borde y el hover del botón */
+  /* HU01 - Botón de estilo
+     Este botón todavía no tiene ningún estilo.
+     Aquí debes escribir el CSS para darle un color de fondo, un borde,
+     y que cambie un poco de color cuando el mouse pase por encima (usa :hover).
+     Esta historia no necesita JavaScript, solo CSS. */
 }
 
 .btn-show-more {

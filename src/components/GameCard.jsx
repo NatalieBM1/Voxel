@@ -13,7 +13,12 @@ function GameCard({ game, isFavorite, onToggleFavorite, onAddToCart }) {
         <h3 className="game-title">{game.title}</h3>
         <div className="game-meta">
           <span className="game-tag">{game.genre}</span>
-          {/* HU03 - Precio con formato - Inserta aquí el código para darle formato de moneda colombiana al precio (ej. $ 129.900) */}
+          {/* HU02 - Precio con formato
+              El precio llega desde la base de datos como un número simple, por ejemplo 129900.
+              Aquí debes transformar ese número para que se vea como dinero colombiano,
+              por ejemplo "$ 129.900", con el símbolo de pesos y el punto que separa los miles.
+              Pista: puedes crear una función formatearPrecio(numero) que reciba el precio
+              y devuelva el texto ya formateado, y usarla donde se muestra el precio. */}
           <span>{game.price}</span>
         </div>
       </div>

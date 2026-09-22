@@ -1,6 +1,6 @@
 import GameCard from './GameCard'
 
-// Cuadrícula de tarjetas que reutilizan Inicio y Favoritos
+// Cuadrícula de tarjetas (Inicio y Favoritos)
 function GameGrid({ games, favorites, onToggleFavorite, onAddToCart }) {
   return (
     <div className="game-list">
