@@ -1,6 +1,4 @@
-import { formatPrice } from '../lib/formatPrice'
-
-function GameCard({ game }) {
+function GameCard({ game, isFavorite, onToggleFavorite, onAddToCart }) {
   return (
     <article className="game-card">
       <img
@@ -15,10 +13,24 @@ function GameCard({ game }) {
         <h3 className="game-title">{game.title}</h3>
         <div className="game-meta">
           <span className="game-tag">{game.genre}</span>
-          <span className="price">{formatPrice(game.price)}</span>
+          {/* HU03 - Precio con formato - Inserta aquí el código para darle formato de moneda colombiana al precio (ej. $ 129.900) */}
+          <span>{game.price}</span>
         </div>
       </div>
-      <button className="btn-add">Agregar al carrito</button>
+      <div className="game-actions">
+        <button
+          type="button"
+          className="btn-favorite"
+          aria-pressed={isFavorite}
+          aria-label="Marcar como favorito"
+          onClick={() => onToggleFavorite(game)}
+        >
+          ♥
+        </button>
+        <button type="button" className="btn-add-cart" onClick={() => onAddToCart(game)}>
+          Agregar al carrito
+        </button>
+      </div>
     </article>
   )
 }

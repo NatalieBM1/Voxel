@@ -1,32 +1,12 @@
-/* ==========================================================
-   Sistema de diseño de Voxel
-   Principio: todo es una celda de una retícula de bloques.
-   Sin sombras: la jerarquía sale del color, el tamaño y el peso.
-   ========================================================== */
+/* HU04 - Diseño libre - Cada equipo puede modificar colores, tipografía, bordes y espaciados de este archivo con total libertad */
 
 :root {
-  /* Colores */
-  --fondo: #0d1b20; /* fondo de la página (petróleo oscuro) */
-  --superficie: #132a31; /* celdas y controles */
-  --superficie-alta: #183540; /* celda con el mouse encima */
-  --borde: #2a4750; /* líneas de la retícula */
-  --texto: #eaf0e6; /* texto principal */
-  --texto-2: #8ea9ae; /* texto secundario y datos */
-  --acento: #ffb52e; /* azafrán: botón, marca y foco */
-  --acento-hover: #ffc75c;
-  --sobre-acento: #1b1303; /* texto sobre el acento */
-  --apoyo: #ff7a66; /* coral: solo para errores */
-
-  /* Tipografía */
-  --fuente-titulo: 'Bricolage Grotesque', 'Trebuchet MS', sans-serif;
-  --fuente-datos: 'IBM Plex Mono', Consolas, monospace;
-
-  /* Medidas */
-  --ancho: 1320px;
-  --radio: 3px;
-  --espacio: 24px;
-
-  color-scheme: dark;
+  --color-fondo: #ffffff;
+  --color-texto: #1a1a1a;
+  --color-texto-suave: #595959;
+  --color-borde: #d9d9d9;
+  --ancho: 1200px;
+  --espacio: 20px;
 }
 
 * {
@@ -35,10 +15,9 @@
 
 body {
   margin: 0;
-  background: var(--fondo);
-  color: var(--texto);
-  font-family: var(--fuente-datos);
-  font-size: 15px;
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.5;
 }
 
@@ -49,20 +28,12 @@ p {
   margin: 0;
 }
 
-h1,
-h2,
-h3,
-button {
-  font-family: var(--fuente-titulo);
-}
-
-/* Foco de teclado visible en todo el sitio */
 :focus-visible {
-  outline: 2px solid var(--acento);
-  outline-offset: 3px;
+  outline: 2px solid var(--color-texto);
+  outline-offset: 2px;
 }
 
-/* La página ocupa toda la altura para que el pie quede abajo */
+/* ---------- Estructura base: la página ocupa toda la altura para que el pie quede abajo ---------- */
 .app {
   display: flex;
   flex-direction: column;
@@ -74,204 +45,136 @@ button {
   width: 100%;
   max-width: var(--ancho);
   margin: 0 auto;
-  padding: 32px var(--espacio) 72px;
+  padding: var(--espacio);
 }
 
-/* ---------- Marca ---------- */
+/* ---------- Marca (logo + nombre, ver HU01) ---------- */
 .wordmark {
   display: flex;
   align-items: baseline;
-  font-size: 30px;
-  font-weight: 800;
-  letter-spacing: -0.045em;
-  line-height: 1;
+  font-size: 26px;
+  font-weight: 700;
 }
 
 .wordmark-block {
   display: inline-block;
-  width: 0.24em;
-  height: 0.24em;
+  width: 0.22em;
+  height: 0.22em;
   margin-left: 0.06em;
-  background: var(--acento);
+  background: currentColor;
 }
 
 /* ---------- Encabezado ---------- */
 .header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: var(--fondo);
-  border-bottom: 1px solid var(--borde);
+  border-bottom: 1px solid var(--color-borde);
 }
 
 .header-inner {
-  display: grid;
-  grid-template-columns: auto minmax(160px, 520px) auto auto;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
   max-width: var(--ancho);
   margin: 0 auto;
-  padding: 14px var(--espacio);
+  padding: 16px var(--espacio);
 }
 
-/* Buscador (solo visual) */
-.search {
-  position: relative;
-}
-
-.search-icon {
-  position: absolute;
-  top: 50%;
-  left: 12px;
-  transform: translateY(-50%);
-  fill: none;
-  stroke: var(--texto-2);
-  stroke-width: 2;
-  stroke-linecap: round;
-  pointer-events: none;
-}
-
-.search input,
-.genre-select {
-  width: 100%;
-  height: 42px;
-  border: 1px solid var(--borde);
-  border-radius: var(--radio);
-  background: var(--superficie);
-  color: var(--texto);
-  font-family: var(--fuente-datos);
-  font-size: 14px;
-}
-
-.search input {
-  padding: 0 12px 0 40px;
-}
-
-.search input::placeholder {
-  color: var(--texto-2);
-  opacity: 1;
-}
-
-/* Selector de género (solo visual) */
-.genre-select {
-  appearance: none;
-  padding: 0 38px 0 12px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%238ea9ae' stroke-width='1.8'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-}
-
-.search input:disabled,
-.genre-select:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-/* Carrito (solo visual, con el contador en 0) */
-.cart-indicator {
+/* ---------- Navegación (pestañas Inicio / Favoritos / Carrito) ---------- */
+.navbar {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  height: 42px;
-  padding: 0 14px;
-  border: 1px solid var(--borde);
-  border-radius: var(--radio);
-  color: var(--texto);
+  gap: 4px;
+  max-width: var(--ancho);
+  margin: 0 auto;
+  padding: 0 var(--espacio);
+  border-bottom: 1px solid var(--color-borde);
 }
 
-.cart-indicator svg {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.cart-count {
-  min-width: 1.4em;
-  padding: 1px 6px;
-  border-radius: 2px;
-  background: var(--superficie-alta);
-  color: var(--texto-2);
-  font-size: 13px;
+.navbar__tab {
+  padding: 12px 16px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--color-texto-suave);
+  font: inherit;
   font-weight: 600;
-  text-align: center;
+  cursor: pointer;
 }
 
-/* ---------- Catálogo ---------- */
-.catalog-head {
+.navbar__tab--active {
+  border-bottom-color: var(--color-texto);
+  color: var(--color-texto);
+}
+
+/* ---------- Estructura de página compartida (Inicio, Favoritos, Carrito) ---------- */
+.page__header {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
-.catalog-head h2 {
-  font-size: 26px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+.page__content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.catalog-head p {
-  color: var(--texto-2);
-  font-size: 13px;
+/* ---------- Filtros de Inicio (buscador, género, orden) ---------- */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-/* Retícula: líneas finas compartidas entre celdas, sin sombras */
+.input-search,
+.select-genre,
+.select-sort {
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--color-borde);
+  border-radius: 4px;
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  font: inherit;
+  font-size: 14px;
+}
+
+.input-search {
+  flex: 1;
+  min-width: 180px;
+}
+
+/* ---------- Cuadrícula de tarjetas: responsiva, estructural ---------- */
 .game-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  border-top: 1px solid var(--borde);
-  border-left: 1px solid var(--borde);
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
 }
 
 .game-card {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding: 16px;
-  background: var(--superficie);
-  border-right: 1px solid var(--borde);
-  border-bottom: 1px solid var(--borde);
-  transition: background-color 0.15s;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--color-borde);
 }
 
-.game-card:hover {
-  background: var(--superficie-alta);
-}
-
-/* Todas las portadas de Steam son 460x215: mantenemos esa proporción */
 .game-cover {
   display: block;
   width: 100%;
   height: auto;
+  /* Todas las portadas de Steam vienen en 460x215: mantenemos esa proporción */
   aspect-ratio: 460 / 215;
   object-fit: cover;
-  border-radius: 2px;
-  background: var(--fondo);
-  color: var(--texto-2);
-  font-size: 12px;
 }
 
 .game-info {
   display: flex;
   flex: 1;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 12px;
+  gap: 8px;
 }
 
 .game-title {
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
 }
 
 .game-meta {
@@ -283,90 +186,62 @@ button {
 
 .game-tag {
   padding: 1px 8px;
-  border: 1px solid var(--borde);
-  border-radius: 2px;
-  color: var(--texto-2);
+  border: 1px solid var(--color-borde);
+  color: var(--color-texto-suave);
   font-size: 12px;
 }
 
-.price {
-  font-size: 17px;
-  font-weight: 600;
-  white-space: nowrap;
+.game-actions {
+  display: flex;
+  gap: 8px;
 }
 
-/* Botón: estilo final, sin función todavía */
-.btn-add {
-  width: 100%;
+.btn-favorite {
+  width: 40px;
   height: 40px;
-  border: 0;
-  border-radius: var(--radio);
-  background: var(--acento);
-  color: var(--sobre-acento);
-  font-size: 15px;
-  font-weight: 700;
+  border: 1px solid var(--color-borde);
+  background: var(--color-fondo);
   cursor: pointer;
-  transition: background-color 0.15s;
 }
 
-.btn-add:hover {
-  background: var(--acento-hover);
+.btn-add-cart {
+  /* HU02 - Botón de estilo - Inserta aquí el color, el borde y el hover del botón */
 }
 
-.btn-add:active {
-  background: #f0a41a;
+.btn-show-more {
+  align-self: center;
+  height: 40px;
+  padding: 0 20px;
+  border: 1px solid var(--color-borde);
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  font: inherit;
+  cursor: pointer;
 }
 
 /* ---------- Estados de carga y error ---------- */
 .status {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 28px;
-  border: 1px solid var(--borde);
-  border-radius: var(--radio);
-  background: var(--superficie);
-  color: var(--texto-2);
-}
-
-.status-spinner {
-  flex: none;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--borde);
-  border-top-color: var(--acento);
-  border-radius: 50%;
-  animation: girar 0.9s linear infinite;
+  padding: 20px;
+  border: 1px solid var(--color-borde);
 }
 
 .status-error {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-  border-color: var(--apoyo);
+  border-color: #b91c1c;
 }
 
 .status-title {
-  color: var(--apoyo);
-  font-family: var(--fuente-titulo);
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
 }
 
 .status-detail {
-  color: var(--texto);
-}
-
-@keyframes girar {
-  to {
-    transform: rotate(360deg);
-  }
+  color: var(--color-texto-suave);
 }
 
 /* ---------- Pie ---------- */
 .footer {
-  border-top: 1px solid var(--borde);
-  color: var(--texto-2);
+  border-top: 1px solid var(--color-borde);
+  color: var(--color-texto-suave);
   font-size: 13px;
 }
 
@@ -377,111 +252,25 @@ button {
   gap: 16px;
   max-width: var(--ancho);
   margin: 0 auto;
-  padding: 20px var(--espacio);
+  padding: 16px var(--espacio);
 }
 
 .footer-brand {
   display: flex;
   align-items: baseline;
-  color: var(--texto);
-  font-family: var(--fuente-titulo);
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: -0.045em;
+  color: var(--color-texto);
+  font-size: 16px;
+  font-weight: 700;
 }
 
 /* ---------- Móvil ---------- */
-@media (max-width: 720px) {
-  :root {
-    --espacio: 16px;
-  }
-
-  /* Fila 1: marca y carrito. Fila 2: buscador y género */
-  .header-inner {
-    grid-template-columns: 1fr auto;
-    grid-template-areas:
-      'marca carrito'
-      'buscador genero';
-    justify-content: stretch;
-    gap: 12px;
-  }
-
-  .wordmark {
-    grid-area: marca;
-  }
-
-  .cart-indicator {
-    grid-area: carrito;
-    justify-self: end;
-  }
-
-  .search {
-    grid-area: buscador;
-  }
-
-  .genre-select {
-    grid-area: genero;
-    width: 168px;
-  }
-
-  .main {
-    padding-top: 24px;
+@media (max-width: 640px) {
+  .game-list {
+    grid-template-columns: 1fr;
   }
 
   .footer-inner {
     flex-direction: column;
     gap: 4px;
-  }
-}
-
-/* Tarjeta compacta en teléfonos: portada a la izquierda, datos a la derecha */
-@media (max-width: 560px) {
-  .game-list {
-    grid-template-columns: 1fr;
-  }
-
-  .game-card {
-    display: grid;
-    grid-template-columns: 132px 1fr;
-    grid-template-areas:
-      'portada datos'
-      'boton boton';
-    column-gap: 14px;
-    row-gap: 12px;
-  }
-
-  .game-cover {
-    grid-area: portada;
-  }
-
-  .game-info {
-    grid-area: datos;
-    gap: 8px;
-  }
-
-  .game-title {
-    font-size: 16px;
-  }
-
-  .game-meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-  }
-
-  .btn-add {
-    grid-area: boton;
-  }
-}
-
-/* Quien prefiere menos movimiento no ve transiciones ni giro */
-@media (prefers-reduced-motion: reduce) {
-  .game-card,
-  .btn-add {
-    transition: none;
-  }
-
-  .status-spinner {
-    animation: none;
   }
 }
