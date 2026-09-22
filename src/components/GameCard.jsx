@@ -1,12 +1,25 @@
+import { formatPrice } from '../lib/formatPrice'
+
 function GameCard({ game }) {
   return (
-    <div className="game-card">
-      <img src={game.image_url} alt={game.title} />
-      <h3>{game.title}</h3>
-      <p>{game.genre}</p>
-      <p className="price">{game.price}</p>
-      <button>Agregar al carrito</button>
-    </div>
+    <article className="game-card">
+      <img
+        className="game-cover"
+        src={game.image_url}
+        alt={game.title}
+        width="460"
+        height="215"
+        loading="lazy"
+      />
+      <div className="game-info">
+        <h3 className="game-title">{game.title}</h3>
+        <div className="game-meta">
+          <span className="game-tag">{game.genre}</span>
+          <span className="price">{formatPrice(game.price)}</span>
+        </div>
+      </div>
+      <button className="btn-add">Agregar al carrito</button>
+    </article>
   )
 }
 

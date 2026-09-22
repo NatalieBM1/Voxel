@@ -1,39 +1,487 @@
+/* ==========================================================
+   Sistema de diseño de Voxel
+   Principio: todo es una celda de una retícula de bloques.
+   Sin sombras: la jerarquía sale del color, el tamaño y el peso.
+   ========================================================== */
+
+:root {
+  /* Colores */
+  --fondo: #0d1b20; /* fondo de la página (petróleo oscuro) */
+  --superficie: #132a31; /* celdas y controles */
+  --superficie-alta: #183540; /* celda con el mouse encima */
+  --borde: #2a4750; /* líneas de la retícula */
+  --texto: #eaf0e6; /* texto principal */
+  --texto-2: #8ea9ae; /* texto secundario y datos */
+  --acento: #ffb52e; /* azafrán: botón, marca y foco */
+  --acento-hover: #ffc75c;
+  --sobre-acento: #1b1303; /* texto sobre el acento */
+  --apoyo: #ff7a66; /* coral: solo para errores */
+
+  /* Tipografía */
+  --fuente-titulo: 'Bricolage Grotesque', 'Trebuchet MS', sans-serif;
+  --fuente-datos: 'IBM Plex Mono', Consolas, monospace;
+
+  /* Medidas */
+  --ancho: 1320px;
+  --radio: 3px;
+  --espacio: 24px;
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  background: white;
-  color: black;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: var(--fuente-datos);
+  font-size: 15px;
+  line-height: 1.5;
 }
 
-.header,
-.footer {
-  padding: 16px 24px;
-}
-
-.header h1 {
+h1,
+h2,
+h3,
+p {
   margin: 0;
+}
+
+h1,
+h2,
+h3,
+button {
+  font-family: var(--fuente-titulo);
+}
+
+/* Foco de teclado visible en todo el sitio */
+:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 3px;
+}
+
+/* La página ocupa toda la altura para que el pie quede abajo */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .main {
-  padding: 24px;
+  flex: 1;
+  width: 100%;
+  max-width: var(--ancho);
+  margin: 0 auto;
+  padding: 32px var(--espacio) 72px;
 }
 
-/* Cuadrícula de tarjetas */
+/* ---------- Marca ---------- */
+.wordmark {
+  display: flex;
+  align-items: baseline;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.wordmark-block {
+  display: inline-block;
+  width: 0.24em;
+  height: 0.24em;
+  margin-left: 0.06em;
+  background: var(--acento);
+}
+
+/* ---------- Encabezado ---------- */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--fondo);
+  border-bottom: 1px solid var(--borde);
+}
+
+.header-inner {
+  display: grid;
+  grid-template-columns: auto minmax(160px, 520px) auto auto;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  max-width: var(--ancho);
+  margin: 0 auto;
+  padding: 14px var(--espacio);
+}
+
+/* Buscador (solo visual) */
+.search {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  fill: none;
+  stroke: var(--texto-2);
+  stroke-width: 2;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
+.search input,
+.genre-select {
+  width: 100%;
+  height: 42px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: var(--superficie);
+  color: var(--texto);
+  font-family: var(--fuente-datos);
+  font-size: 14px;
+}
+
+.search input {
+  padding: 0 12px 0 40px;
+}
+
+.search input::placeholder {
+  color: var(--texto-2);
+  opacity: 1;
+}
+
+/* Selector de género (solo visual) */
+.genre-select {
+  appearance: none;
+  padding: 0 38px 0 12px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%238ea9ae' stroke-width='1.8'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+
+.search input:disabled,
+.genre-select:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Carrito (solo visual, con el contador en 0) */
+.cart-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 42px;
+  padding: 0 14px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  color: var(--texto);
+}
+
+.cart-indicator svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cart-count {
+  min-width: 1.4em;
+  padding: 1px 6px;
+  border-radius: 2px;
+  background: var(--superficie-alta);
+  color: var(--texto-2);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ---------- Catálogo ---------- */
+.catalog-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.catalog-head h2 {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.catalog-head p {
+  color: var(--texto-2);
+  font-size: 13px;
+}
+
+/* Retícula: líneas finas compartidas entre celdas, sin sombras */
 .game-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  border-top: 1px solid var(--borde);
+  border-left: 1px solid var(--borde);
 }
 
 .game-card {
-  border: 1px solid #ccc;
-  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  background: var(--superficie);
+  border-right: 1px solid var(--borde);
+  border-bottom: 1px solid var(--borde);
+  transition: background-color 0.15s;
 }
 
-.game-card img {
-  width: 100%;
+.game-card:hover {
+  background: var(--superficie-alta);
+}
+
+/* Todas las portadas de Steam son 460x215: mantenemos esa proporción */
+.game-cover {
   display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 460 / 215;
+  object-fit: cover;
+  border-radius: 2px;
+  background: var(--fondo);
+  color: var(--texto-2);
+  font-size: 12px;
 }
 
-.error {
-  color: red;
+.game-info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.game-title {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.game-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.game-tag {
+  padding: 1px 8px;
+  border: 1px solid var(--borde);
+  border-radius: 2px;
+  color: var(--texto-2);
+  font-size: 12px;
+}
+
+.price {
+  font-size: 17px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Botón: estilo final, sin función todavía */
+.btn-add {
+  width: 100%;
+  height: 40px;
+  border: 0;
+  border-radius: var(--radio);
+  background: var(--acento);
+  color: var(--sobre-acento);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.btn-add:hover {
+  background: var(--acento-hover);
+}
+
+.btn-add:active {
+  background: #f0a41a;
+}
+
+/* ---------- Estados de carga y error ---------- */
+.status {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 28px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  background: var(--superficie);
+  color: var(--texto-2);
+}
+
+.status-spinner {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--borde);
+  border-top-color: var(--acento);
+  border-radius: 50%;
+  animation: girar 0.9s linear infinite;
+}
+
+.status-error {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  border-color: var(--apoyo);
+}
+
+.status-title {
+  color: var(--apoyo);
+  font-family: var(--fuente-titulo);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.status-detail {
+  color: var(--texto);
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Pie ---------- */
+.footer {
+  border-top: 1px solid var(--borde);
+  color: var(--texto-2);
+  font-size: 13px;
+}
+
+.footer-inner {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: var(--ancho);
+  margin: 0 auto;
+  padding: 20px var(--espacio);
+}
+
+.footer-brand {
+  display: flex;
+  align-items: baseline;
+  color: var(--texto);
+  font-family: var(--fuente-titulo);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.045em;
+}
+
+/* ---------- Móvil ---------- */
+@media (max-width: 720px) {
+  :root {
+    --espacio: 16px;
+  }
+
+  /* Fila 1: marca y carrito. Fila 2: buscador y género */
+  .header-inner {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'marca carrito'
+      'buscador genero';
+    justify-content: stretch;
+    gap: 12px;
+  }
+
+  .wordmark {
+    grid-area: marca;
+  }
+
+  .cart-indicator {
+    grid-area: carrito;
+    justify-self: end;
+  }
+
+  .search {
+    grid-area: buscador;
+  }
+
+  .genre-select {
+    grid-area: genero;
+    width: 168px;
+  }
+
+  .main {
+    padding-top: 24px;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+/* Tarjeta compacta en teléfonos: portada a la izquierda, datos a la derecha */
+@media (max-width: 560px) {
+  .game-list {
+    grid-template-columns: 1fr;
+  }
+
+  .game-card {
+    display: grid;
+    grid-template-columns: 132px 1fr;
+    grid-template-areas:
+      'portada datos'
+      'boton boton';
+    column-gap: 14px;
+    row-gap: 12px;
+  }
+
+  .game-cover {
+    grid-area: portada;
+  }
+
+  .game-info {
+    grid-area: datos;
+    gap: 8px;
+  }
+
+  .game-title {
+    font-size: 16px;
+  }
+
+  .game-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .btn-add {
+    grid-area: boton;
+  }
+}
+
+/* Quien prefiere menos movimiento no ve transiciones ni giro */
+@media (prefers-reduced-motion: reduce) {
+  .game-card,
+  .btn-add {
+    transition: none;
+  }
+
+  .status-spinner {
+    animation: none;
+  }
 }

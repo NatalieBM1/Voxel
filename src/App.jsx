@@ -32,8 +32,19 @@ function App() {
     <div className="app">
       <Header />
       <main className="main">
-        {loading && <p>Cargando juegos...</p>}
-        {error && <p className="error">No se pudieron cargar los juegos: {error}</p>}
+        {loading && (
+          <div className="status" role="status">
+            <span className="status-spinner" aria-hidden="true"></span>
+            <p>Cargando juegos...</p>
+          </div>
+        )}
+        {error && (
+          <div className="status status-error" role="alert">
+            <p className="status-title">No se pudieron cargar los juegos</p>
+            <p className="status-detail">{error}</p>
+            <p>Revisa tu conexión y que el archivo .env tenga los valores del docente.</p>
+          </div>
+        )}
         {!loading && !error && <GameList games={games} />}
       </main>
       <Footer />

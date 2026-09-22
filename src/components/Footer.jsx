@@ -1,7 +1,12 @@
 function Footer() {
   return (
     <footer className="footer">
-      <p>Tienda de videojuegos - Taller de Scrum</p>
+      <div className="footer-inner">
+        <p className="footer-brand">
+          Voxel<span className="wordmark-block" aria-hidden="true"></span>
+        </p>
+        <p>Tienda de videojuegos para el taller de Scrum</p>
+      </div>
     </footer>
   )
 }
