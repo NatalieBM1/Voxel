@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars -- cart se usa al resolver HU10
 function Cart({ cart }) {
   return (
     <div className="page">

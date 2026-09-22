@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars -- games, favorites, onToggleFavorite y onAddToCart se usan al resolver HU06
 function Favorites({ games, favorites, onToggleFavorite, onAddToCart }) {
   function handleShowMore() {
     // HU07 - Paginación - Inserta aquí el código para mostrar los primeros 12 juegos y cargar 12 más cada vez que se presione "Ver más"

@@ -12,7 +12,9 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [activeView, setActiveView] = useState('inicio')
+  // eslint-disable-next-line no-unused-vars -- setFavorites se usa al resolver HU06
   const [favorites, setFavorites] = useState([])
+  // eslint-disable-next-line no-unused-vars -- setCart se usa al resolver HU10
   const [cart, setCart] = useState([])
 
   // Al abrir la página, pedimos los juegos a Supabase
@@ -35,11 +37,13 @@ function App() {
   }, [])
 
   // Handler del corazón en cada tarjeta: ya recibe el juego y ya está conectado, falta la lógica de adentro
+  // eslint-disable-next-line no-unused-vars -- el parámetro game se usa al resolver HU06
   function handleToggleFavorite(game) {
     // HU06 - Favoritos - Inserta aquí el código para agregar o quitar este juego de la lista de favoritos
   }
 
   // Handler de "Agregar al carrito" en cada tarjeta: ya recibe el juego y ya está conectado, falta la lógica de adentro
+  // eslint-disable-next-line no-unused-vars -- el parámetro game se usa al resolver HU10
   function handleAddToCart(game) {
     // HU10 - Carrito - Inserta aquí el código para agregar este juego al carrito (si ya está, debe sumar uno a la cantidad)
   }
