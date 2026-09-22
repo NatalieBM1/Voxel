@@ -1,15 +1,42 @@
 /* HU03 - Diseño libre
-   A partir de aquí, todo el archivo es tuyo: puedes cambiar colores,
-   tipografía, bordes y espaciados como quieras.
-   Lo único que no debes borrar es la estructura de las clases .page,
-   .page__header y .page__content, porque de eso depende que las tres
-   pantallas (Inicio, Favoritos y Carrito) se vean ordenadas. */
+   Ya dejamos un diseño base completo para toda la tienda: colores, tipografía,
+   tarjetas, navbar y demás. A partir de aquí puedes ajustar cualquier color,
+   tipografía, borde o espaciado con total libertad, siempre que no rompas
+   la estructura de las clases .page, .page__header y .page__content. */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap');
 
 :root {
-  --color-fondo: #ffffff;
-  --color-texto: #1a1a1a;
-  --color-texto-suave: #595959;
-  --color-borde: #d9d9d9;
+  /* Superficies: varias capas de negro para dar profundidad (estilo Dovetail) */
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --surface-2: #1c1c22;
+
+  /* Bordes con un tinte azulado helado (estilo Resend) */
+  --border: rgba(130, 170, 255, 0.16);
+  --border-strong: rgba(130, 170, 255, 0.32);
+
+  /* Texto */
+  --fg: #f2f2f2;
+  --fg-2: #a7a7a7;
+  --muted: #6b6b73;
+
+  /* Acento azul "neón" */
+  --accent: #3B7BFF;
+  --accent-dark: #14294D;
+  --accent-hover: #5C93FF;
+
+  /* Formas y sombra */
+  --radius-pill: 9999px;
+  --radius-card: 16px;
+  --radius-sm: 8px;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--border);
+
+  /* Tipografía */
+  --font-heading: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, Consolas, monospace;
+
   --ancho: 1200px;
   --espacio: 20px;
 }
@@ -20,9 +47,9 @@
 
 body {
   margin: 0;
-  background: var(--color-fondo);
-  color: var(--color-texto);
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
   line-height: 1.5;
 }
 
@@ -33,8 +60,14 @@ p {
   margin: 0;
 }
 
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+}
+
 :focus-visible {
-  outline: 2px solid var(--color-texto);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -53,12 +86,14 @@ p {
   padding: var(--espacio);
 }
 
-/* ---------- Marca (logo + nombre, ejemplo ya resuelto) ---------- */
+/* ---------- Marca (logo y nombre) ---------- */
 .wordmark {
   display: flex;
   align-items: baseline;
+  font-family: var(--font-heading);
   font-size: 26px;
   font-weight: 700;
+  color: var(--fg);
 }
 
 .wordmark-block {
@@ -66,12 +101,12 @@ p {
   width: 0.22em;
   height: 0.22em;
   margin-left: 0.06em;
-  background: currentColor;
+  background: var(--accent);
 }
 
 /* ---------- Encabezado ---------- */
 .header {
-  border-bottom: 1px solid var(--color-borde);
+  border-bottom: 1px solid var(--border);
 }
 
 .header-inner {
@@ -84,10 +119,11 @@ p {
 .navbar {
   display: flex;
   gap: 4px;
+  background: var(--surface);
   max-width: var(--ancho);
   margin: 0 auto;
   padding: 0 var(--espacio);
-  border-bottom: 1px solid var(--color-borde);
+  border-bottom: 1px solid var(--border);
 }
 
 .navbar__tab {
@@ -95,18 +131,22 @@ p {
   border: none;
   border-bottom: 2px solid transparent;
   background: none;
-  color: var(--color-texto-suave);
+  color: var(--fg-2);
   font: inherit;
   font-weight: 600;
   cursor: pointer;
 }
 
 .navbar__tab--active {
-  border-bottom-color: var(--color-texto);
-  color: var(--color-texto);
+  border-bottom-color: var(--accent);
+  color: var(--accent);
 }
 
 /* ---------- Estructura de página compartida (Inicio, Favoritos, Carrito) ---------- */
+.page {
+  background: var(--bg);
+}
+
 .page__header {
   display: flex;
   align-items: baseline;
@@ -115,13 +155,17 @@ p {
   margin-bottom: 20px;
 }
 
+.page__header p {
+  color: var(--fg-2);
+}
+
 .page__content {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* ---------- Filtros de Inicio (buscador, género, orden) ---------- */
+/* ---------- Filtros de Inicio (buscador, género, orden: HU04, HU07, HU08) ---------- */
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -133,12 +177,23 @@ p {
 .select-sort {
   height: 40px;
   padding: 0 12px;
-  border: 1px solid var(--color-borde);
-  border-radius: 4px;
-  background: var(--color-fondo);
-  color: var(--color-texto);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  color: var(--fg);
   font: inherit;
   font-size: 14px;
+}
+
+.input-search::placeholder {
+  color: var(--muted);
+}
+
+.input-search:focus,
+.select-genre:focus,
+.select-sort:focus {
+  outline: none;
+  border-color: var(--accent);
 }
 
 .input-search {
@@ -157,8 +212,13 @@ p {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 12px;
-  border: 1px solid var(--color-borde);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  /* La imagen queda al ras del borde superior; el radio de la tarjeta
+     se lo "presta" a la imagen recortándola con overflow: hidden */
+  overflow: hidden;
 }
 
 .game-cover {
@@ -175,82 +235,125 @@ p {
   flex: 1;
   flex-direction: column;
   gap: 8px;
+  padding: 0 12px;
 }
 
 .game-title {
+  font-family: var(--font-heading);
   font-size: 16px;
   font-weight: 700;
+  color: var(--fg);
 }
 
 .game-meta {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 8px;
 }
 
 .game-tag {
-  padding: 1px 8px;
-  border: 1px solid var(--color-borde);
-  color: var(--color-texto-suave);
+  padding: 2px 10px;
+  background: var(--accent-dark);
+  color: var(--fg-2);
+  border-radius: var(--radius-pill);
   font-size: 12px;
+}
+
+/* Precio (HU02): el contenido sigue siendo el número simple, sin formato;
+   aquí solo se le da tipografía monoespaciada, como al resto de datos numéricos.
+   No hay una clase propia en el JSX para el precio, así que lo tomamos por
+   posición: es el segundo <span> dentro de .game-meta (el primero es .game-tag). */
+.game-meta span:last-child {
+  font-family: var(--font-mono);
+  color: var(--fg);
 }
 
 .game-actions {
   display: flex;
   gap: 8px;
+  padding: 0 12px 12px;
 }
 
+/* HU05 - Favoritos: estado por defecto del corazón, sin relleno.
+   No se le agrega estado "activo": esa lógica es del estudiante. */
 .btn-favorite {
   width: 40px;
   height: 40px;
-  border: 1px solid var(--color-borde);
-  background: var(--color-fondo);
+  border: 1px solid var(--fg-2);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--fg-2);
   cursor: pointer;
 }
 
 .btn-add-cart {
   /* HU01 - Botón de estilo
      Este botón todavía no tiene ningún estilo.
-     Aquí debes escribir el CSS para darle un color de fondo, un borde,
+     Aquí se debe escribir el CSS para darle un color de fondo, un borde,
      y que cambie un poco de color cuando el mouse pase por encima (usa :hover).
      Esta historia no necesita JavaScript, solo CSS. */
 }
 
-.btn-show-more {
-  align-self: center;
+/* ---------- Paginación (HU06) ---------- */
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-btn {
+  min-width: 40px;
   height: 40px;
-  padding: 0 20px;
-  border: 1px solid var(--color-borde);
-  background: var(--color-fondo);
-  color: var(--color-texto);
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  color: var(--fg);
   font: inherit;
+  font-family: var(--font-mono);
   cursor: pointer;
+}
+
+.page-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.page-btn--active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+.page-btn:disabled {
+  color: var(--muted);
+  cursor: not-allowed;
 }
 
 /* ---------- Estados de carga y error ---------- */
 .status {
-  padding: 20px;
-  border: 1px solid var(--color-borde);
-}
-
-.status-error {
-  border-color: #b91c1c;
+  padding: 24px;
+  text-align: center;
+  color: var(--fg-2);
 }
 
 .status-title {
+  font-family: var(--font-heading);
   font-size: 18px;
   font-weight: 700;
+  color: var(--fg);
 }
 
 .status-detail {
-  color: var(--color-texto-suave);
+  color: var(--fg-2);
 }
 
 /* ---------- Pie ---------- */
 .footer {
-  border-top: 1px solid var(--color-borde);
-  color: var(--color-texto-suave);
+  border-top: 1px solid var(--border);
+  color: var(--fg-2);
   font-size: 13px;
 }
 
@@ -267,7 +370,8 @@ p {
 .footer-brand {
   display: flex;
   align-items: baseline;
-  color: var(--color-texto);
+  font-family: var(--font-heading);
+  color: var(--fg);
   font-size: 16px;
   font-weight: 700;
 }
