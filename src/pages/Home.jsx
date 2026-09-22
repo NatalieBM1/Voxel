@@ -5,42 +5,47 @@ function Home({ games, favorites, onToggleFavorite, onAddToCart }) {
   const [searchText, setSearchText] = useState('')
   const [selectedGenre, setSelectedGenre] = useState('Todos')
   const [sortOption, setSortOption] = useState('nombre-az')
+  const [currentPage, setCurrentPage] = useState(1)
+  const gamesPerPage = 12
+  const totalPages = Math.ceil(games.length / gamesPerPage)
 
-  // Géneros reales, sacados de los juegos cargados (sin escribirlos a mano)
+  // Generos juegos
   const genres = [...new Set(games.map((game) => game.genre))]
 
-  // Juegos que se muestran en la página; por ahora es la lista completa, sin transformar
+  // Juegos que se muestran en la página
   let visibleGames = games
 
-  // HU07 - Filtrar los juegos
-  // El selector de género ya guarda en la variable selectedGenre el género elegido
-  // (o "Todos" si no se ha elegido ninguno en particular).
-  // Aquí debes mostrar solo los juegos que coincidan con ese género.
-  // Si selectedGenre es "Todos", se deben mostrar todos los juegos sin filtrar.
-  // Pista: puedes usar el método filter() comparando el genre de cada juego.
+  /* HU07 - Filtrar los juegos
+    El selector de género ya guarda en la variable selectedGenre el género elegido
+    (o "Todos" si no se ha elegido ninguno en particular).
+    Aquí se debe mostrar solo los juegos que coincidan con ese género.
+    Si selectedGenre es "Todos", se deben mostrar todos los juegos sin filtrar.
+    Nota: Se puede usar el método filter() comparando el genre de cada juego.
+  */
 
-  // HU08 - Buscar
-  // El campo de búsqueda ya guarda en la variable searchText lo que el estudiante escribe.
-  // Aquí debes mostrar solo los juegos cuyo título contenga ese texto,
-  // sin importar si está en mayúsculas o minúsculas.
-  // Pista: puedes usar el método filter() junto con toLowerCase() e includes().
+  /* HU08 - Buscar
+    El campo de búsqueda ya guarda en la variable searchText lo que se escribe.
+    Aquí se deben mostrar solo los juegos cuyo título contenga ese texto,
+    sin importar si está en mayúsculas o minúsculas.
+    Nota: Se puede usar el método filter() junto con toLowerCase() e includes().
+  */
 
-  // HU04 - Ordenar los juegos
-  // El selector de arriba ya guarda en la variable sortOption la opción elegida
-  // (por ejemplo "precio-asc", "precio-desc" o "nombre-az").
-  // Aquí debes usar esa variable para reordenar la lista de juegos antes de mostrarla.
-  // Pista: puedes copiar el arreglo de juegos con [...games] y usar el método sort(),
-  // comparando el price o el title según el valor de sortOption.
+  /* HU04 - Ordenar los juegos
+    El selector ya guarda en la variable sortOption la opción elegida
+    (por ejemplo "precio-asc", "precio-desc" o "nombre-az").
+    Aquí se debe usar esa variable para reordenar la lista de juegos antes de mostrarla.
+    Nota: Se puede copiar el arreglo de juegos con [...games] y usar el método sort(),
+    comparando el price o el title según el valor de sortOption.
+  */
 
-  function handleShowMore() {
-    // HU06 - Paginación
-    // Ahora mismo se muestran todos los juegos al mismo tiempo, lo que hace la página muy larga.
-    // Aquí debes hacer que, al inicio, solo se muestren los primeros 12 juegos,
-    // y que el botón "Ver más" muestre 12 juegos adicionales cada vez que se presione,
-    // hasta llegar al final de la lista.
-    // Pista: puedes usar un estado como "visibleCount" que empiece en 12 y aumente
-    // de 12 en 12, y usar slice() para cortar el arreglo de juegos hasta ese número.
-  }
+  // HU06 - Paginación
+  // Los controles de abajo (Anterior, números de página, Siguiente) ya funcionan
+  // y actualizan el estado "currentPage".
+  // Aquí debes calcular qué juegos corresponden a la página actual y mostrar
+  // solo esos, en vez de mostrar el arreglo completo.
+  // Pista: calcula el índice de inicio con (currentPage - 1) * gamesPerPage,
+  // y usa slice(inicio, inicio + gamesPerPage) sobre el arreglo de juegos
+  // antes de recorrerlo con map().
 
   return (
     <div className="page">
@@ -92,9 +97,40 @@ function Home({ games, favorites, onToggleFavorite, onAddToCart }) {
           onAddToCart={onAddToCart}
         />
 
-        <button type="button" className="btn-show-more" onClick={handleShowMore}>
-          Ver más
-        </button>
+        {totalPages > 1 && (
+          <div className="pagination">
+            <button
+              type="button"
+              className="page-btn"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((p) => p - 1)}
+            >
+              Anterior
+            </button>
+
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
+              <button
+                key={pageNumber}
+                type="button"
+                className={
+                  pageNumber === currentPage ? 'page-btn page-btn--active' : 'page-btn'
+                }
+                onClick={() => setCurrentPage(pageNumber)}
+              >
+                {pageNumber}
+              </button>
+            ))}
+
+            <button
+              type="button"
+              className="page-btn"
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((p) => p + 1)}
+            >
+              Siguiente
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )
