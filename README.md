@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Voxel - Tienda de videojuegos
 
 Es una tienda de videojuegos hecha con React + Vite. Los juegos se leen desde Supabase.
@@ -32,3 +33,6 @@ Es una tienda de videojuegos hecha con React + Vite. Los juegos se leen desde Su
    ```
 
 5. Abre en el navegador la dirección que aparece en la terminal.
+=======
+# ProyectoVoxel
+>>>>>>> bc641383e6ffcc0b664ce9c1fc581e609364e292
