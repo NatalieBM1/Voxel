@@ -4,41 +4,45 @@
    tipografía, borde o espaciado con total libertad, siempre que no rompas
    la estructura de las clases .page, .page__header y .page__content. */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap');
-
 :root {
-  /* Superficies: varias capas de negro para dar profundidad (estilo Dovetail) */
-  --bg: #0a0a0a;
-  --surface: #141414;
-  --surface-2: #1c1c22;
+  /* Fondos: del "vacío" del lienzo a los paneles de vidrio */
+  --bg-void: #05070a;
+  --bg-panel: rgba(16, 21, 30, 0.65);
+  --bg-panel-solid: #0c1119;
+  --bg-panel-2: #10161f;
 
-  /* Bordes con un tinte azulado helado (estilo Resend) */
-  --border: rgba(130, 170, 255, 0.16);
-  --border-strong: rgba(130, 170, 255, 0.32);
+  /* Bordes */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
 
   /* Texto */
-  --fg: #f2f2f2;
-  --fg-2: #a7a7a7;
-  --muted: #6b6b73;
+  --text-primary: #e9edf5;
+  --text-secondary: #97a2b5;
+  --text-dim: #5b6577;
 
-  /* Acento azul "neón" */
-  --accent: #3B7BFF;
-  --accent-dark: #14294D;
-  --accent-hover: #5C93FF;
-
-  /* Formas y sombra */
-  --radius-pill: 9999px;
-  --radius-card: 16px;
-  --radius-sm: 8px;
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--border);
+  /* Acentos y resplandores */
+  --accent-cyan: #22d3ee;
+  --accent-blue: #3b82f6;
+  --accent-glow: rgba(34, 211, 238, 0.28);
+  --accent-glow-soft: rgba(34, 211, 238, 0.10);
 
   /* Tipografía */
-  --font-heading: 'Space Grotesk', system-ui, sans-serif;
-  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, Consolas, monospace;
+  --font-ui: -apple-system, 'Segoe UI', 'Inter', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'Consolas', 'SFMono-Regular', Menlo, monospace;
 
+  /* Formas */
+  --radius: 14px;
+  --radius-sm: 10px;
+
+  /* Derivados del sistema anterior, para no dejar valores sueltos por el archivo */
+  --radius-pill: 999px;
+  --bg-topbar: rgba(5, 7, 10, 0.78);
+  --accent-blue-soft: rgba(59, 130, 246, 0.08);
+  --grid-line: rgba(255, 255, 255, 0.035);
   --ancho: 1200px;
   --espacio: 20px;
+
+  color-scheme: dark;
 }
 
 * {
@@ -47,10 +51,35 @@
 
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--fg);
-  font-family: var(--font-body);
+  background: var(--bg-void);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
   line-height: 1.5;
+}
+
+/* Cuadrícula técnica muy tenue, desvanecida hacia abajo */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background-image: linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 42px 42px;
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 35%, transparent 100%);
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 35%, transparent 100%);
+}
+
+/* Resplandores difusos en dos esquinas */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(48rem 32rem at 15% 8%, var(--accent-glow-soft), transparent 70%),
+    radial-gradient(42rem 28rem at 85% 15%, var(--accent-blue-soft), transparent 70%);
 }
 
 h1,
@@ -60,14 +89,8 @@ p {
   margin: 0;
 }
 
-h1,
-h2,
-h3 {
-  font-family: var(--font-heading);
-}
-
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-cyan);
   outline-offset: 2px;
 }
 
@@ -90,23 +113,36 @@ h3 {
 .wordmark {
   display: flex;
   align-items: baseline;
-  font-family: var(--font-heading);
   font-size: 26px;
   font-weight: 700;
-  color: var(--fg);
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
 }
 
+/* El cuadrito de la marca hace de indicador: late muy despacio */
 .wordmark-block {
   display: inline-block;
   width: 0.22em;
   height: 0.22em;
   margin-left: 0.06em;
-  background: var(--accent);
+  background: var(--accent-cyan);
+  animation: pulseDot 2.6s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--accent-glow);
+  }
+
+  50% {
+    box-shadow: 0 0 10px 2px var(--accent-glow);
+  }
 }
 
 /* ---------- Encabezado ---------- */
 .header {
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .header-inner {
@@ -117,13 +153,17 @@ h3 {
 
 /* ---------- Navegación (pestañas Inicio / Favoritos / Carrito) ---------- */
 .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
   display: flex;
   gap: 4px;
-  background: var(--surface);
-  max-width: var(--ancho);
-  margin: 0 auto;
-  padding: 0 var(--espacio);
-  border-bottom: 1px solid var(--border);
+  /* La barra ocupa todo el ancho, pero las pestañas se alinean con el contenido */
+  padding-inline: max(var(--espacio), calc((100% - var(--ancho)) / 2));
+  background: var(--bg-topbar);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .navbar__tab {
@@ -131,22 +171,24 @@ h3 {
   border: none;
   border-bottom: 2px solid transparent;
   background: none;
-  color: var(--fg-2);
+  color: var(--text-secondary);
   font: inherit;
   font-weight: 600;
   cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
-.navbar__tab--active {
-  border-bottom-color: var(--accent);
-  color: var(--accent);
+.navbar__tab:hover {
+  color: var(--text-primary);
+}
+
+.navbar__tab--active,
+.navbar__tab--active:hover {
+  border-bottom-color: var(--accent-cyan);
+  color: var(--accent-cyan);
 }
 
 /* ---------- Estructura de página compartida (Inicio, Favoritos, Carrito) ---------- */
-.page {
-  background: var(--bg);
-}
-
 .page__header {
   display: flex;
   align-items: baseline;
@@ -155,8 +197,15 @@ h3 {
   margin-bottom: 20px;
 }
 
+.page__header h2 {
+  font-size: 24px;
+  letter-spacing: -0.02em;
+}
+
 .page__header p {
-  color: var(--fg-2);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 13px;
 }
 
 .page__content {
@@ -177,23 +226,25 @@ h3 {
 .select-sort {
   height: 40px;
   padding: 0 12px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
-  background: var(--surface-2);
-  color: var(--fg);
+  background: var(--bg-panel-2);
+  color: var(--text-primary);
   font: inherit;
   font-size: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .input-search::placeholder {
-  color: var(--muted);
+  color: var(--text-dim);
 }
 
 .input-search:focus,
 .select-genre:focus,
 .select-sort:focus {
   outline: none;
-  border-color: var(--accent);
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 3px var(--accent-glow-soft);
 }
 
 .input-search {
@@ -212,13 +263,20 @@ h3 {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-card);
+  background: var(--bg-panel);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
   /* La imagen queda al ras del borde superior; el radio de la tarjeta
      se lo "presta" a la imagen recortándola con overflow: hidden */
   overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.game-card:hover {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 18px var(--accent-glow-soft);
 }
 
 .game-cover {
@@ -239,10 +297,10 @@ h3 {
 }
 
 .game-title {
-  font-family: var(--font-heading);
   font-size: 16px;
   font-weight: 700;
-  color: var(--fg);
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
 }
 
 .game-meta {
@@ -252,12 +310,15 @@ h3 {
   gap: 8px;
 }
 
+/* Género como insignia tipo "badge" del panel de referencia */
 .game-tag {
   padding: 2px 10px;
-  background: var(--accent-dark);
-  color: var(--fg-2);
+  border: 1px solid var(--accent-cyan);
   border-radius: var(--radius-pill);
-  font-size: 12px;
+  background: var(--accent-glow-soft);
+  color: var(--accent-cyan);
+  font-family: var(--font-mono);
+  font-size: 11px;
 }
 
 /* Precio (HU02): el contenido sigue siendo el número simple, sin formato;
@@ -266,7 +327,8 @@ h3 {
    posición: es el segundo <span> dentro de .game-meta (el primero es .game-tag). */
 .game-meta span:last-child {
   font-family: var(--font-mono);
-  color: var(--fg);
+  font-size: 15px;
+  color: var(--text-primary);
 }
 
 .game-actions {
@@ -280,11 +342,17 @@ h3 {
 .btn-favorite {
   width: 40px;
   height: 40px;
-  border: 1px solid var(--fg-2);
+  border: 1px solid var(--text-secondary);
   border-radius: var(--radius-pill);
   background: transparent;
-  color: var(--fg-2);
+  color: var(--text-secondary);
   cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-favorite:hover {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
 }
 
 .btn-add-cart {
@@ -307,53 +375,60 @@ h3 {
   min-width: 40px;
   height: 40px;
   padding: 0 14px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-pill);
-  background: var(--surface-2);
-  color: var(--fg);
+  background: var(--bg-panel-2);
+  color: var(--text-primary);
   font: inherit;
   font-family: var(--font-mono);
+  font-size: 14px;
   cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.page-btn:hover:not(:disabled) {
-  border-color: var(--accent);
-  color: var(--accent);
+.page-btn:hover:not(:disabled):not(.page-btn--active) {
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+  box-shadow: 0 0 12px var(--accent-glow-soft);
 }
 
 .page-btn--active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #ffffff;
+  border: none;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+  color: var(--bg-void);
+  font-weight: 700;
 }
 
 .page-btn:disabled {
-  color: var(--muted);
+  color: var(--text-dim);
   cursor: not-allowed;
 }
 
 /* ---------- Estados de carga y error ---------- */
 .status {
-  padding: 24px;
+  padding: 32px 20px;
   text-align: center;
-  color: var(--fg-2);
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 14px;
 }
 
 .status-title {
-  font-family: var(--font-heading);
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--fg);
+  margin-bottom: 4px;
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .status-detail {
-  color: var(--fg-2);
+  color: var(--text-dim);
 }
 
 /* ---------- Pie ---------- */
 .footer {
-  border-top: 1px solid var(--border);
-  color: var(--fg-2);
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-dim);
   font-size: 13px;
 }
 
@@ -370,8 +445,7 @@ h3 {
 .footer-brand {
   display: flex;
   align-items: baseline;
-  font-family: var(--font-heading);
-  color: var(--fg);
+  color: var(--text-secondary);
   font-size: 16px;
   font-weight: 700;
 }
@@ -385,5 +459,22 @@ h3 {
   .footer-inner {
     flex-direction: column;
     gap: 4px;
+  }
+}
+
+/* Quien prefiere menos movimiento no ve el latido ni las transiciones */
+@media (prefers-reduced-motion: reduce) {
+  .wordmark-block {
+    animation: none;
+  }
+
+  .game-card,
+  .page-btn,
+  .navbar__tab,
+  .btn-favorite,
+  .input-search,
+  .select-genre,
+  .select-sort {
+    transition: none;
   }
 }
