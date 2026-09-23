@@ -1,6 +1,5 @@
 # Voxel - Tienda de videojuegos
 
-Proyecto base para el taller de Scrum (Ingeniería de Software 1).
 Es una tienda de videojuegos hecha con React + Vite. Los juegos se leen desde Supabase.
 
 ## Cómo empezar
@@ -14,7 +13,7 @@ Es una tienda de videojuegos hecha con React + Vite. Los juegos se leen desde Su
 
 2. Instala las dependencias:
 
-   ```bash
+   ```
    npm install
    ```
 
@@ -28,24 +27,8 @@ Es una tienda de videojuegos hecha con React + Vite. Los juegos se leen desde Su
 
 4. Inicia la aplicación:
 
-   ```bash
+   ```
    npm run dev
    ```
 
-5. Abre en el navegador la dirección que aparece en la terminal (normalmente http://localhost:5173).
-
-## Estructura
-
-```
-src/
-  main.jsx                 punto de entrada
-  App.jsx                  carga los juegos y arma la página
-  lib/supabaseClient.js    conexión con Supabase
-  components/              Header, GameList, GameCard y Footer
-  styles/App.css           estilos
-```
-
-## Durante el taller
-
-Trabajarás en equipo, por sprints, agregando funcionalidades según las historias de usuario que entregue el docente.
-Recuerda: el archivo `.env` nunca se sube a git.
+5. Abre en el navegador la dirección que aparece en la terminal.

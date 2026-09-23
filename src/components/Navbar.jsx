@@ -1,5 +1,4 @@
-// Navegación base del taller: cambiar de pestaña ya funciona,
-// no es una historia de usuario (no lleva comentario HU0X).
+// Navegación
 const TABS = [
   { id: 'inicio', label: 'Inicio' },
   { id: 'favoritos', label: 'Favoritos' },

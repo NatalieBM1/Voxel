@@ -17,7 +17,7 @@ function GameCard({ game, isFavorite, onToggleFavorite, onAddToCart }) {
               El precio llega desde la base de datos como un número simple, por ejemplo 129900.
               Aquí debes transformar ese número para que se vea como dinero colombiano,
               por ejemplo "$ 129.900", con el símbolo de pesos y el punto que separa los miles.
-              Pista: puedes crear una función formatearPrecio(numero) que reciba el precio
+              Nota: Se puede crear una función formatearPrecio(numero) que reciba el precio
               y devuelva el texto ya formateado, y usarla donde se muestra el precio. */}
           <span>{game.price}</span>
         </div>

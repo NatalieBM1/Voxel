@@ -38,14 +38,15 @@ function Home({ games, favorites, onToggleFavorite, onAddToCart }) {
     comparando el price o el title según el valor de sortOption.
   */
 
-  // HU06 - Paginación
-  // Los controles de abajo (Anterior, números de página, Siguiente) ya funcionan
-  // y actualizan el estado "currentPage".
-  // Aquí debes calcular qué juegos corresponden a la página actual y mostrar
-  // solo esos, en vez de mostrar el arreglo completo.
-  // Pista: calcula el índice de inicio con (currentPage - 1) * gamesPerPage,
-  // y usa slice(inicio, inicio + gamesPerPage) sobre el arreglo de juegos
-  // antes de recorrerlo con map().
+  /* HU06 - Paginación
+    Los controles (Anterior, números de página, Siguiente) ya funcionan
+    y actualizan el estado "currentPage".
+    Aqui se debe calcular qué juegos corresponden a la página actual y mostrar
+    solo esos, en vez de mostrar el arreglo completo.
+    Nota: calcula el índice de inicio con (currentPage - 1) * gamesPerPage,
+    y usa slice(inicio, inicio + gamesPerPage) sobre el arreglo de juegos
+    antes de recorrerlo con map().
+  */
 
   return (
     <div className="page">
